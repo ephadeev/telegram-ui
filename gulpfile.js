@@ -18,7 +18,7 @@ function html() {
         .pipe(htmlmin({
             collapseWhitespace: true
         }))
-        .pipe(dest('dist'))
+        .pipe(dest('docs'))
 }
 
 function scss() {
@@ -29,16 +29,16 @@ function scss() {
         }))
         .pipe(csso())
         .pipe(concat('index.css'))
-        .pipe(dest('dist'))
+        .pipe(dest('docs'))
 }
 
 function clear() {
-    return del('dist')
+    return del('docs')
 }
 
 function serve() {
     sync.init({
-        server: './dist'
+        server: './docs'
     });
 
     watch('src/**.html', series(html)).on('change', sync.reload);
@@ -47,7 +47,7 @@ function serve() {
 
 function icons() {
     return src('node_modules/@fortawesome/fontawesome-free/webfonts/*')
-        .pipe(dest('./dist/webfonts/'));
+        .pipe(dest('./webfonts/'));
 }
 
 exports.build = series(clear, scss, html);
