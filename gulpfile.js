@@ -21,6 +21,11 @@ function html() {
         .pipe(dest('docs/'))
 }
 
+function js() {
+    return src('src/**.js')
+        .pipe(dest('docs/'))
+}
+
 function scss() {
     return src('src/scss/**.scss')
         .pipe(sass())
@@ -43,6 +48,7 @@ function serve() {
 
     watch('src/**.html', series(html)).on('change', sync.reload);
     watch('src/scss/**.scss', series(scss)).on('change', sync.reload);
+    watch('src/**.js', series(js)).on('change', sync.reload);
 }
 
 function icons() {
@@ -51,5 +57,5 @@ function icons() {
 }
 
 exports.build = series(clear, scss, html);
-exports.serve = series(clear, icons, scss, html, serve);
+exports.serve = series(clear, icons, scss, html, js, serve);
 exports.clear = clear;
